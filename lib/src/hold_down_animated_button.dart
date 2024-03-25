@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vibration/vibration.dart';
 
 class HoldDownAnimatedButton extends StatefulWidget {
   const HoldDownAnimatedButton({
@@ -39,6 +40,13 @@ class _HoldDownAnimatedButtonState extends State<HoldDownAnimatedButton>
     );
     _progressController.addStatusListener(
       (status) {
+        if (status == AnimationStatus.forward) {
+          Vibration.vibrate(
+              pattern: [10, widget.duration.inMilliseconds],
+              intensities: [1, 255]);
+        } else {
+          Vibration.cancel();
+        }
         if (status == AnimationStatus.completed) {
           widget.onPressed();
           _scaleController.reverse();
